@@ -44,10 +44,27 @@ export async function GET(
     })
     const reviews = Array.from(reviewsMap.values()).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
+    // Fetch Store stats
+    const storeStats = await prisma.store.findUnique({
+      where: { id: product.store.id },
+      include: {
+        _count: { select: { products: true } }
+      }
+    })
+    
+    const storeReviewCount = await prisma.review.count({
+      where: { order: { storeId: product.store.id } }
+    })
+
     const responseData = {
       ...product,
       reviews,
-      orderItems: undefined
+      orderItems: undefined,
+      storeStats: {
+        productCount: storeStats?._count.products || 0,
+        reviewCount: storeReviewCount,
+        createdAt: storeStats?.createdAt || product.store.createdAt
+      }
     }
 
     return NextResponse.json(responseData)

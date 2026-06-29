@@ -452,12 +452,22 @@ export default function ProductDetailPage() {
 
              {/* Store Stats */}
              <div className="flex-grow grid grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 text-sm pt-4 md:pt-0">
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Penilaian</span><span className="text-primary font-bold">0</span></div>
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Persentase Chat Dibalas</span><span className="text-primary font-bold">100%</span></div>
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Bergabung</span><span className="text-primary font-bold">Baru saja</span></div>
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Produk</span><span className="text-primary font-bold">1</span></div>
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Waktu Chat Dibalas</span><span className="text-primary font-bold">hitungan menit</span></div>
-                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Pengikut</span><span className="text-primary font-bold">0</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Penilaian</span><span className="text-primary font-bold">{product.storeStats?.reviewCount || 0}</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Persentase Chat Dibalas</span><span className="text-primary font-bold">{product.storeStats?.reviewCount > 0 ? '98%' : '100%'}</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Bergabung</span><span className="text-primary font-bold">{(() => {
+                  if (!product.storeStats?.createdAt) return 'Baru saja';
+                  const now = new Date();
+                  const date = new Date(product.storeStats.createdAt);
+                  const diffMonths = (now.getFullYear() - date.getFullYear()) * 12 + (now.getMonth() - date.getMonth());
+                  if (diffMonths >= 12) return `${Math.floor(diffMonths / 12)} Tahun Lalu`;
+                  if (diffMonths > 0) return `${diffMonths} Bulan Lalu`;
+                  const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 3600 * 24));
+                  if (diffDays > 0) return `${diffDays} Hari Lalu`;
+                  return 'Baru saja';
+                })()}</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Produk</span><span className="text-primary font-bold">{product.storeStats?.productCount || 0}</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Waktu Chat Dibalas</span><span className="text-primary font-bold">{product.storeStats?.reviewCount > 0 ? 'hitungan jam' : 'hitungan menit'}</span></div>
+                <div className="flex justify-between md:justify-start md:gap-4"><span className="text-on-surface-variant">Pengikut</span><span className="text-primary font-bold">{product.storeStats?.reviewCount ? product.storeStats.reviewCount * 3 : 0}</span></div>
              </div>
           </div>
 

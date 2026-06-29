@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  walletBalance Float    @default(0)
+  address       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  roles             UserRole[]
+  store             Store?
+  orders            Order[]        @relation("BuyerOrders")
+  sellerOrders      Order[]        @relation("SellerOrders")
+  driverOrders      Order[]        @relation("DriverOrders")
+  walletTransactions WalletTransaction[]
+  cartItems         Cart?
+  chatRooms         ChatRoom[]
+  messages          ChatMessage[]
+  claimedVouchers   UserVoucher[]
+}
+
+model UserRole {
+  id     String @id @default(cuid())
+  userId String
+  role   String // BUYER | SELLER | DRIVER | ADMIN
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+}
+
+model Store {
+  id          String   @id @default(cuid())
+  ownerId     String   @unique
+  name        String   @unique
+  description String?
+  imageUrl    String?
+  address     String?
+  createdAt   DateTime @default(now())
+
+  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  products Product[]
+  orders   Order[]
+  vouchers Voucher[]
+  chatRooms ChatRoom[]
+  addressRequests AddressChangeRequest[]
+}
+
+model AddressChangeRequest {
+  id          String   @id @default(cuid())
+  storeId     String
+  newAddress  String
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  storeId     String
+  name        String
+  description String?
+  price         Float
+  originalPrice Float?   // Original strikethrough price
+  stock         Int      @default(0)
+  imageUrl      String?  // Main image (for backward compatibility)
+  images        String?  // JSON array string of additional image URLs
+  category      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model Cart {
+  id      String  @id @default(cuid())
+  buyerId String  @unique
+  storeId String?
+
+  buyer User       @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  items CartItem[]
+}
+
+model CartItem {
+  id        String @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int    @default(1)
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id              String    @id @default(cuid())
+  buyerId         String
+  sellerId        String
+  driverId        String?
+  storeId         String
+  subtotal        Float
+  discountAmount  Float     @default(0)
+  shippingFee     Float
+  taxAmount       Float
+  total           Float
+  status          String    // SEDANG_DIKEMAS | MENUNGGU_PENGIRIM | SEDANG_DIKIRIM | MENUNGGU_REFUND | DIKEMBALIKAN | PESANAN_SELESAI
+  shippingAddress String
+  courierType     String    // INSTANT | NEXT_DAY | REGULAR
+  voucherCode     String?
+  createdAt       DateTime  @default(now())
+  processedAt     DateTime?
+  pickedAt        DateTime?
+  completedAt     DateTime?
+  slaDeadline     DateTime?
+  driverCommission Float    @default(0)
+
+  buyer  User       @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller User       @relation("SellerOrders", fields: [sellerId], references: [id])
+  driver User?      @relation("DriverOrders", fields: [driverId], references: [id])
+  store  Store      @relation(fields: [storeId], references: [id])
+  items  OrderItem[]
+  review Review?
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  name      String // snapshot nama produk saat order
+  price     Float  // snapshot harga saat order
+  quantity  Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model WalletTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // TOPUP | PAYMENT | REFUND | COMMISSION
+  amount      Float
+  description String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Voucher {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  description     String?
+  discountType    String    // PERCENTAGE | FIXED
+  discountValue   Float
+  maxUsage        Int       @default(1)
+  usedCount       Int       @default(0)
+  minPurchase     Float     @default(0)
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  
+  storeId         String?
+  store           Store?    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  claimedBy       UserVoucher[]
+}
+
+model UserVoucher {
+  id        String   @id @default(cuid())
+  userId    String
+  voucherId String
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voucher Voucher @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, voucherId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String
+  rating    Int      // 1-5
+  comment   String
+  imageUrl  String?
+  orderId   String?  @unique
+  createdAt DateTime @default(now())
+
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model SystemConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model ChatRoom {
+  id        String   @id @default(cuid())
+  buyerId   String
+  storeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyer    User          @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  store    Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@unique([buyerId, storeId])
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  roomId    String
+  senderId  String   // userId of the sender
+  text      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+

@@ -8,7 +8,7 @@ Proyek E-Commerce Multi-Peran tingkat lanjut yang dirancang khusus untuk memenuh
 
 ✅ **Level 1**: Halaman Publik, Register/Login Multi-Peran, Detail Produk tanpa login, Fitur Ulasan.
 ✅ **Level 2**: Seller Center khusus dengan CRUD Produk, Manajemen Toko, UI bertema *Navy*.
-✅ **Level 3**: Pembeli memiliki fitur Keranjang *Single-Store*, Checkout (Kurir, Subtotal, PPN, Ongkir), Manajemen Alamat & Top-Up Wallet mandiri.
+✅ **Level 3**: Fitur Keranjang Belanja Pembeli lengkap dengan endpoint API dan UI (*add, update, remove*). Mengimplementasikan **Single-Store Checkout** (satu keranjang hanya bisa diisi produk dari satu toko). Jika terjadi konflik (produk dari toko lain ditambahkan), UI akan menolak dan memberikan opsi peringatan jelas kepada user.
 ✅ **Level 4**: Sistem Diskon/Voucher, Tombol Proses Seller, dan Laporan Pengeluaran/Pendapatan otomatis.
 ✅ **Level 5**: Driver Mode (UI *Mobile-First* Teal), auto-refresh job board, ambil dan selesaikan pesanan dengan komisi masuk dompet.
 ✅ **Level 6**: Dashboard God-Eye Admin, Generate Voucher, dan **Time Simulator** yang memicu *Auto-Refund* SLA secara *real-time*.

@@ -15,7 +15,7 @@ export default function BuyerHomePage() {
   
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('Semua')
+  const [activeCategory, setActiveCategory] = useState('Elektronik')
   
   // Single store warning modal state
   const [isWarningOpen, setIsWarningOpen] = useState(false)

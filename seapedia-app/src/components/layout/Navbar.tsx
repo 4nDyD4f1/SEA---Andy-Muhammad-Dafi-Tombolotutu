@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import { useCartStore } from '@/store/cartStore'
@@ -64,7 +65,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
       <div className="container-app h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <span className="text-2xl font-black tracking-tight logo-gradient">SEAPEDIA</span>
+          <Image src="/logo1.png" alt="SEAPEDIA" width={140} height={40} className="h-8 w-auto object-contain" priority />
         </Link>
 
         <div className="flex items-center gap-4 md:gap-6">

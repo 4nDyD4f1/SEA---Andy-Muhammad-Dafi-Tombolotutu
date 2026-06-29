@@ -14,7 +14,7 @@ export default function LandingPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [reviews, setReviews] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('Semua')
+  const [activeTab, setActiveTab] = useState('Elektronik')
   const [searchQuery, setSearchQuery] = useState('')
   
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
@@ -221,7 +221,12 @@ export default function LandingPage() {
             
             {!isLoading && products.length > 0 && (
               <div className="text-center mt-10">
-                <button className="btn-outline border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-transparent bg-white shadow-sm">
+                <button 
+                  onClick={() => {
+                    setActiveTab('Semua')
+                    setSearchQuery('')
+                  }}
+                  className="btn-outline border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-transparent bg-white shadow-sm">
                   Lihat Semua Produk
                 </button>
               </div>
@@ -324,8 +329,8 @@ export default function LandingPage() {
         <div className="container-app relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
-              <div className="flex items-center justify-center md:justify-start mb-2">
-                <span className="text-2xl font-black tracking-tight text-white">SEAPEDIA</span>
+              <div className="flex items-center justify-center md:justify-start mb-4">
+                <Image src="/logo2.png" alt="SEAPEDIA" width={140} height={40} className="h-8 w-auto object-contain" />
               </div>
               <p className="text-white/60 text-sm text-center md:text-left">
                 Marketplace Multi-Peran Terbaik & Terpercaya

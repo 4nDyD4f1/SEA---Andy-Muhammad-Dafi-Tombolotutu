@@ -16,6 +16,12 @@ export function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [unreadCount, setUnreadCount] = useState(0)
+  const [isSwitchingRole, setIsSwitchingRole] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!user) return
@@ -51,6 +57,8 @@ export function Navbar() {
   }
 
   const handleRoleSwitch = async (role: string) => {
+    setIsSwitchingRole(role)
+    setIsDropdownOpen(false)
     try {
       const res = await fetch('/api/auth/switch-role', {
         method: 'POST',
@@ -60,16 +68,24 @@ export function Navbar() {
       if (res.ok) {
         const data = await res.json()
         setActiveRole(data.activeRole)
-        setIsDropdownOpen(false)
-        switch(role) {
-          case 'BUYER': router.push('/buyer'); break;
-          case 'SELLER': router.push('/seller/dashboard'); break;
-          case 'DRIVER': router.push('/driver/dashboard'); break;
-          case 'ADMIN': router.push('/admin/dashboard'); break;
-        }
+        
+        // Tahan animasi sebentar agar transisi terasa smooth
+        setTimeout(() => {
+          switch(role) {
+            case 'BUYER': router.push('/buyer'); break;
+            case 'SELLER': router.push('/seller/dashboard'); break;
+            case 'DRIVER': router.push('/driver/dashboard'); break;
+            case 'ADMIN': router.push('/admin/dashboard'); break;
+          }
+          // Hilangkan overlay setelah halaman mulai dimuat
+          setTimeout(() => setIsSwitchingRole(null), 800)
+        }, 800)
+      } else {
+        setIsSwitchingRole(null)
       }
     } catch (e) {
       console.error('Failed to switch role', e)
+      setIsSwitchingRole(null)
     }
   }
 
@@ -77,14 +93,14 @@ export function Navbar() {
     <nav className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
       <div className="container-app h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <Image src="/logo-blue.png" alt="SEAPEDIA" width={140} height={40} className="h-16 w-auto object-contain scale-[2.5] origin-left" priority />
+          <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={140} height={40} className="h-16 w-auto object-contain scale-[2.5] origin-left" priority />
         </Link>
 
         <div className="flex items-center gap-4 md:gap-6">
-          {(!user || activeRole === 'BUYER') && (
+          {(!mounted || !user || activeRole === 'BUYER') && (
             <Link href="/buyer/cart" className="relative p-2 text-on-surface hover:text-primary transition-colors">
               <span className="material-symbols-outlined text-[26px]">shopping_cart</span>
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="absolute top-0 right-0 bg-coral text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center animate-bounce-gentle border-2 border-white">
                   {itemCount > 99 ? '99+' : itemCount}
                 </span>
@@ -92,7 +108,7 @@ export function Navbar() {
             </Link>
           )}
 
-          {user && (activeRole === 'BUYER' || activeRole === 'SELLER') && (
+          {mounted && user && (activeRole === 'BUYER' || activeRole === 'SELLER') && (
             <Link href={activeRole === 'BUYER' ? '/buyer/chat' : '/seller/chat'} className="relative p-2 text-on-surface hover:text-primary transition-colors">
               <span className="material-symbols-outlined text-[26px]">chat</span>
               {unreadCount > 0 && (
@@ -103,13 +119,13 @@ export function Navbar() {
             </Link>
           )}
 
-          {activeRole === 'SELLER' && (
+          {mounted && activeRole === 'SELLER' && (
             <Link href="/seller/dashboard" className="hidden md:flex items-center gap-1.5 bg-primary/10 text-primary border border-primary/20 px-3 py-1.5 rounded-full text-sm font-bold hover:bg-primary hover:text-white transition-all">
               <span className="material-symbols-outlined text-[18px]">storefront</span> Dashboard
             </Link>
           )}
 
-          {activeRole === 'BUYER' && user && (
+          {mounted && activeRole === 'BUYER' && user && (
             <div className="hidden lg:flex items-center gap-4 mr-2">
               <Link href="/buyer/orders" className="text-sm font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[18px]">receipt_long</span> Daftar Pesanan
@@ -120,7 +136,7 @@ export function Navbar() {
             </div>
           )}
 
-          {user ? (
+          {mounted && user ? (
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -206,6 +222,25 @@ export function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Role Transition Overlay */}
+      {isSwitchingRole && (
+        <div className="fixed inset-0 z-[100] bg-white/80 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in">
+          <div className="w-24 h-24 mb-6 relative">
+            <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-primary">
+              <span className="material-symbols-outlined text-3xl">
+                {isSwitchingRole === 'BUYER' ? 'shopping_bag' : isSwitchingRole === 'SELLER' ? 'storefront' : isSwitchingRole === 'DRIVER' ? 'local_shipping' : 'admin_panel_settings'}
+              </span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-black text-on-surface mb-2">
+            Beralih ke Mode {isSwitchingRole === 'BUYER' ? 'Pembeli' : isSwitchingRole === 'SELLER' ? 'Penjual' : isSwitchingRole === 'DRIVER' ? 'Kurir' : 'Admin'}...
+          </h2>
+          <p className="text-on-surface-variant font-medium animate-pulse">Menyiapkan ruang kerja Anda</p>
+        </div>
+      )}
     </nav>
   )
 }

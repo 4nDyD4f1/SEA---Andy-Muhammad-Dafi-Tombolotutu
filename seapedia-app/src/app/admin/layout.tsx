@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (!user) {
       router.push('/auth/login')
     } else if (activeRole !== 'ADMIN') {
-      router.push('/auth/select-role')
+      router.push('/')
     }
   }, [user, activeRole, router])
 
@@ -37,7 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-outline-variant fixed h-full z-40 shadow-sm">
         <div className="h-16 flex items-center px-6 border-b border-outline-variant shrink-0 bg-white">
           <Link href="/" className="flex items-center">
-            <Image src="/logo-blue.png" alt="SEAPEDIA" width={120} height={30} className="h-12 w-auto object-contain scale-[2.5] origin-left" priority />
+            <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={120} height={30} className="h-12 w-auto object-contain scale-[2.5] origin-left" priority />
           </Link>
         </div>
         

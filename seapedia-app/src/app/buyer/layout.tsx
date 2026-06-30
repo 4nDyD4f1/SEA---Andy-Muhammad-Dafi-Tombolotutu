@@ -16,7 +16,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
     if (!user) {
       router.push('/auth/login')
     } else if (activeRole !== 'BUYER') {
-      router.push('/auth/select-role')
+      router.push('/')
     }
   }, [user, activeRole, router])
 

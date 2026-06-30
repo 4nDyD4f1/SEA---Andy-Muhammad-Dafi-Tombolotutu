@@ -54,9 +54,7 @@ export default function ForgotPasswordPage() {
         
         {/* Header & Logo */}
         <div className="flex flex-col items-center mb-8">
-          <Link href="/" className="mb-8">
-            <Image src="/logo-blue.png" alt="SEAPEDIA" width={160} height={45} className="h-10 w-auto object-contain scale-[2] origin-center" priority />
-          </Link>
+
           <h2 className="text-3xl font-bold text-on-surface mb-3 tracking-tight">Lupa Password? 🔐</h2>
           <p className="text-on-surface-variant text-center px-4">
             Jangan panik! Masukkan email Anda yang terdaftar dan kami akan mengirimkan tautan pemulihan.

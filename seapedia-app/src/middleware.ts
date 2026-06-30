@@ -46,7 +46,7 @@ export function middleware(request: NextRequest) {
     const allowedRoles = ROLE_PREFIXES[matchedPrefix]
     
     if (!allowedRoles.includes(payload.activeRole)) {
-      return NextResponse.redirect(new URL('/auth/select-role', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
     }
 
     return NextResponse.next()

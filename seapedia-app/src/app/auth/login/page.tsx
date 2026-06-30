@@ -25,15 +25,11 @@ export default function LoginPage() {
         const roles = user.roles || []
         const targetRole = activeRole || roles[0] || 'BUYER'
         
-        if (roles.length > 1 && !activeRole) {
-          router.push('/auth/select-role')
-        } else {
-          if (targetRole === 'BUYER') router.push('/buyer')
-          else if (targetRole === 'SELLER') router.push('/seller/dashboard')
-          else if (targetRole === 'DRIVER') router.push('/driver/dashboard')
-          else if (targetRole === 'ADMIN') router.push('/admin/dashboard')
-          else router.push('/')
-        }
+        if (targetRole === 'BUYER') router.push('/buyer')
+        else if (targetRole === 'SELLER') router.push('/seller/dashboard')
+        else if (targetRole === 'DRIVER') router.push('/driver/dashboard')
+        else if (targetRole === 'ADMIN') router.push('/admin/dashboard')
+        else router.push('/')
       } catch (err) {
         console.error("Redirect error", err)
       }
@@ -68,15 +64,11 @@ export default function LoginPage() {
       setAuth(data.user, data.token)
       toast.success('Login berhasil!')
 
-      if (data.requireRoleSelection) {
-        router.push('/auth/select-role')
-      } else {
-        const role = data.user.roles[0]
-        if (role === 'BUYER') router.push('/buyer')
-        else if (role === 'SELLER') router.push('/seller/dashboard')
-        else if (role === 'DRIVER') router.push('/driver/dashboard')
-        else if (role === 'ADMIN') router.push('/admin/dashboard')
-      }
+      const role = data.user.roles[0]
+      if (role === 'BUYER') router.push('/buyer')
+      else if (role === 'SELLER') router.push('/seller/dashboard')
+      else if (role === 'DRIVER') router.push('/driver/dashboard')
+      else if (role === 'ADMIN') router.push('/admin/dashboard')
     } catch (err: any) {
       toast.error(err.message)
     } finally {
@@ -126,14 +118,7 @@ export default function LoginPage() {
 
         {/* Content */}
         <div className="z-10 w-full max-w-[384px]">
-          <Link href="/" className="inline-flex items-center gap-1 mb-12 group">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-              <span className="material-symbols-outlined text-primary text-[24px]">sailing</span>
-            </div>
-            <div className="flex items-center ml-2">
-              <Image src="/logo2.png" alt="SEAPEDIA" width={160} height={45} className="h-16 w-auto object-contain scale-[2.5] origin-left" priority />
-            </div>
-          </Link>
+
 
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             Samudra <br />
@@ -180,7 +165,7 @@ export default function LoginPage() {
               <span className="material-symbols-outlined text-white text-[20px]">sailing</span>
             </div>
             <div className="flex items-center ml-1">
-              <Image src="/logo-blue.png" alt="SEAPEDIA" width={120} height={30} className="h-12 w-auto object-contain scale-[2.5] origin-left" priority />
+              <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={120} height={30} className="h-12 w-auto object-contain " priority />
             </div>
           </Link>
         </div>

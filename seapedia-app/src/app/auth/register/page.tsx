@@ -27,16 +27,11 @@ export default function RegisterPage() {
       try {
         const roles = user.roles || []
         const targetRole = activeRole || roles[0] || 'BUYER'
-        
-        if (roles.length > 1 && !activeRole) {
-          router.push('/auth/select-role')
-        } else {
-          if (targetRole === 'BUYER') router.push('/buyer')
-          else if (targetRole === 'SELLER') router.push('/seller/dashboard')
-          else if (targetRole === 'DRIVER') router.push('/driver/dashboard')
-          else if (targetRole === 'ADMIN') router.push('/admin/dashboard')
-          else router.push('/')
-        }
+        if (targetRole === 'BUYER') router.push('/buyer')
+        else if (targetRole === 'SELLER') router.push('/seller/dashboard')
+        else if (targetRole === 'DRIVER') router.push('/driver/dashboard')
+        else if (targetRole === 'ADMIN') router.push('/admin/dashboard')
+        else router.push('/')
       } catch (err) {
         console.error("Redirect error", err)
       }
@@ -117,14 +112,7 @@ export default function RegisterPage() {
       <div className="w-full md:w-1/2 lg:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-24 relative overflow-y-auto hide-scrollbar order-2 md:order-1">
         {/* Mobile Branding */}
         <div className="absolute top-6 left-6 md:hidden">
-          <Link href="/" className="inline-flex items-center gap-1">
-            <div className="w-8 h-8 bg-coral rounded-lg flex items-center justify-center shadow-md">
-              <span className="material-symbols-outlined text-white text-[20px]">storefront</span>
-            </div>
-            <div className="flex items-center ml-1">
-              <Image src="/logo-blue.png" alt="SEAPEDIA" width={120} height={30} className="h-12 w-auto object-contain scale-[2.5] origin-left" priority />
-            </div>
-          </Link>
+
         </div>
 
         <div className="w-full max-w-[448px] animate-slide-up mt-12 md:mt-0">

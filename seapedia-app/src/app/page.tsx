@@ -330,7 +330,7 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
               <div className="flex items-center justify-center md:justify-start mb-4">
-                <Image src="/logo2.png" alt="SEAPEDIA" width={140} height={40} className="h-16 w-auto object-contain scale-[2.5] origin-left" />
+                <Image src="/SEAPEDIA-LOGO-PUTIH.png" alt="SEAPEDIA" width={140} height={40} className="h-16 w-auto object-contain scale-[2.5] origin-left" />
               </div>
               <p className="text-white/60 text-sm text-center md:text-left">
                 Marketplace Multi-Peran Terbaik & Terpercaya

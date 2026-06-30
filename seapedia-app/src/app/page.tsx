@@ -156,7 +156,7 @@ export default function LandingPage() {
                 <p className="text-on-surface-variant">Temukan berbagai produk unggulan dari penjual terpercaya.</p>
               </div>
               
-              <div className="w-full md:w-auto flex flex-col items-end gap-3">
+              <div className="w-full md:w-auto flex flex-col items-start md:items-end gap-3 mt-4 md:mt-0">
                 <div className="relative w-full md:w-64">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
                   <input 
@@ -167,7 +167,7 @@ export default function LandingPage() {
                     className="input pl-10 w-full rounded-full"
                   />
                 </div>
-                <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2 max-w-[100vw] sm:max-w-none">
+                <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2 w-full snap-x">
                   {['Semua', 'Elektronik', 'Fashion', 'Makanan', 'Otomotif'].map(tab => (
                     <button 
                       key={tab}

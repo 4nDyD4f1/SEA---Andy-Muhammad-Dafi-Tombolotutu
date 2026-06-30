@@ -1,5 +1,5 @@
-# 🌊 SEAPEDIA - Samudra Belanja Terbaik Indonesia
 
+<<<<<<< HEAD
 Proyek E-Commerce Multi-Peran tingkat lanjut yang dirancang khusus untuk memenuhi 7 Level Persyaratan secara penuh. Aplikasi ini dibangun dengan stack modern menggunakan **Next.js 15 (App Router)**, **Tailwind CSS**, **Zustand**, dan **Prisma ORM (SQLite)**.
 
 ---
@@ -119,3 +119,5 @@ Seluruh API dilindungi oleh arsitektur middleware berbasis JWT dan `requireAuth`
 **Business Rules:**
 ● The cart must reject products from a different store or clearly handle the conflict before adding them.
 ● The single-store checkout behavior must be visible in the UI and documented in the README.
+=======
+>>>>>>> 61c7ed7140d6efc504a3502970bb743d7a061893

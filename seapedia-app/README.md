@@ -1,9 +1,3 @@
-
-<<<<<<< HEAD
-Proyek E-Commerce Multi-Peran tingkat lanjut yang dirancang khusus untuk memenuhi 7 Level Persyaratan secara penuh. Aplikasi ini dibangun dengan stack modern menggunakan **Next.js 15 (App Router)**, **Tailwind CSS**, **Zustand**, dan **Prisma ORM (SQLite)**.
-
----
-
 ## 🚀 Fitur Unggulan & Pencapaian 100 Poin
 
 ✅ **Level 1**: Halaman Publik, Register/Login Multi-Peran, Detail Produk tanpa login, Fitur Ulasan.
@@ -105,19 +99,3 @@ Seluruh API dilindungi oleh arsitektur middleware berbasis JWT dan `requireAuth`
    Aplikasi akan menyala di `http://localhost:3000`.
 
 *Happy Grading!* 💯
-
----
-
-## 📋 Initial Instructions / Requirements
-
-● Allow Buyers to add products to cart.
-● Allow Buyers to update product quantities.
-● Allow Buyers to remove products from cart.
-● Create a cart summary endpoint and cart summary UI.
-● Implement single-store checkout: one cart can only contain products from one store.
-
-**Business Rules:**
-● The cart must reject products from a different store or clearly handle the conflict before adding them.
-● The single-store checkout behavior must be visible in the UI and documented in the README.
-=======
->>>>>>> 61c7ed7140d6efc504a3502970bb743d7a061893

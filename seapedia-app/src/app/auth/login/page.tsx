@@ -169,12 +169,6 @@ export default function LoginPage() {
       */}
       <div className="w-full md:w-1/2 lg:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-24 relative overflow-y-auto hide-scrollbar">
         
-        {/* Logo Branding Khusus Mobile (Muncuk di HP, disembunyikan di Desktop dengan md:hidden) */}
-        <div className="absolute top-6 left-6 md:hidden z-20">
-          <Link href="/" className="inline-block">
-            <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={240} height={70} className="h-14 sm:h-16 w-auto object-contain drop-shadow-sm" priority />
-          </Link>
-        </div>
 
         <div className="w-full max-w-[448px] animate-slide-up mt-12 md:mt-0">
           <div className="mb-8">

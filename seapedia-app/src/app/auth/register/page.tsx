@@ -118,7 +118,7 @@ export default function RegisterPage() {
         {/* Mobile Branding */}
         <div className="absolute top-6 left-6 md:hidden z-20">
           <Link href="/" className="inline-block">
-            <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={160} height={45} className="h-10 sm:h-12 w-auto object-contain drop-shadow-sm" priority />
+            <Image src="/SEAPEDIA-LOGO.png" alt="SEAPEDIA" width={240} height={70} className="h-14 sm:h-16 w-auto object-contain drop-shadow-sm" priority />
           </Link>
         </div>
 
